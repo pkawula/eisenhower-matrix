@@ -5,9 +5,9 @@ import ButtonIcon from 'components/ButtonIcon/ButtonIcon';
 
 const Wrapper = styled.div`
     display: block;
-    width: 100%;
+    width: calc(100% - 2em);
     max-width: 700px;
-    height: 100%;
+    height: calc(100% - 2em);
     max-height: 600px;
     background-color: ${({ theme }) => theme.bg.primary};
     padding: 2em;
@@ -18,6 +18,8 @@ const Wrapper = styled.div`
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     box-shadow: 0px 0px 0px 2000px hsla(0, 0%, 0%, .4);
+    z-index: 999;
+    pointer-events: all;
 
     animation: fadeInJump .5s ease-in-out 1;
 

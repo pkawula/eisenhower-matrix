@@ -18,6 +18,11 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         background-color: ${({ theme }) => theme.light};
         overflow-x: hidden;
+
+        &.modalOpened {
+            overflow: hidden;
+            pointer-events: none;
+        }
     }
 
     #root {

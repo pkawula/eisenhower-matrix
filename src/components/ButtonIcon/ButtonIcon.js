@@ -4,14 +4,17 @@ import styled, { css } from 'styled-components';
 
 const Button = styled.button`
     display: block;
-    box-shadow: ${({ theme }) => theme.boxShadow};
     border: none;
     border-radius: 50%;
+    width: 3em;
+    height: 3em;
     cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.green};
     transition: transform .125s ease-out;
     transform-origin: center center;
     outline-offset: .25em;
     outline-color: ${({ theme }) => theme.colors.green};
+    box-shadow: ${({ theme }) => theme.boxShadow};
 
     &:active {
         transform: scale(.99);
@@ -51,7 +54,7 @@ const Button = styled.button`
     `}
 `;
 
-const ButtonIcon = ({ close, children, ...props }) => <Button {...props} close={close} />;
+const ButtonIcon = ({ close, ...props }) => <Button {...props} close={close} />;
 
 ButtonIcon.propTypes = {
     close: PropTypes.bool,

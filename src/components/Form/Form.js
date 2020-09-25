@@ -1,8 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import Button from 'components/Button/Button';
 import styled from 'styled-components';
 import Input from './Input';
 import Priority from './Priority';
+import { TasksContext } from 'contexts/TasksContext';
+import { ADD_TASK } from 'reducers/Tasks';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -43,7 +45,9 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const Form = () => {
+const Form = ({ toggleModal }) => {
+
+    const { dispatch } = useContext(TasksContext);
 
     const [values, setValues] = useReducer((state, newState) => ({ ...state, ...newState }), {
         title: '',
@@ -54,6 +58,13 @@ const Form = () => {
         importance: null,
         urgency: null,
     });
+
+    const [errors, setErrors] = useReducer((state, newState) => ({ ...state, ...newState }), {
+        title: '',
+        description: '',
+        importance: '',
+        urgency: ''
+    })
 
     const handleUserInput = e => {
         const { value } = e.target;
@@ -88,10 +99,36 @@ const Form = () => {
         }
     }
 
+    const checkFields = () => {
+        const { title, description } = values;
+        const { importance, urgency } = prioritiesChecked;
+
+        if (title === '') setErrors({ title: 'Please give your task a title' });
+        if (description === '') setErrors({ description: 'Please add description' });
+        if (importance === null) setErrors({ importance: 'Please choose how important it is' });
+        if (urgency === null) setErrors({ urgency: 'Please choose how urgent it is' });
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
+        const { title, description } = values;
+        const { importance, urgency } = prioritiesChecked;
 
-        console.log(prioritiesChecked);
+        checkFields();
+
+        console.log(errors)
+
+
+        return dispatch({
+            type: ADD_TASK,
+            payload: {
+                title,
+                description,
+                importance,
+                urgency
+            }
+        });
+
     }
 
     return (
@@ -108,7 +145,7 @@ const Form = () => {
             </FormSection>
             <ButtonsContainer>
                 <StyledButton type="submit" primary>Save</StyledButton>
-                <StyledButton cancel>Cancel</StyledButton>
+                <StyledButton onClick={toggleModal} cancel>Cancel</StyledButton>
             </ButtonsContainer>
         </FormWrapper>
     );

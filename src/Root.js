@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'theme/mainTheme';
 import GlobalStyle from 'theme/GlobalStyle';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from 'components/Header/Header';
 import TasksWrapper from 'components/TasksWrapper/TasksWrapper';
 import Modal from 'components/Modal/Modal';
 import ButtonIcon from 'components/ButtonIcon/ButtonIcon';
 import Form from 'components/Form/Form';
+import TasksContextProvider from 'contexts/TasksContext';
 
 const StyledButtonIcon = styled(ButtonIcon)`
   position: absolute;
@@ -22,16 +23,22 @@ const Root = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      {isModalOpened &&
-        <Helmet>
-          <body className="modalOpened" />
-        </Helmet>}
-      <Header toggleModal={toggleModal} />
-      <TasksWrapper />
-      <StyledButtonIcon onClick={toggleModal} />
-      {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
-        <Form /></Modal>}
+      <HelmetProvider>
+        <GlobalStyle />
+        <TasksContextProvider>
+          <>
+            {isModalOpened &&
+              <Helmet>
+                <body className="modalOpened" />
+              </Helmet>}
+            <Header toggleModal={toggleModal} />
+            <TasksWrapper />
+            <StyledButtonIcon onClick={toggleModal} />
+            {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
+              <Form toggleModal={toggleModal} /></Modal>}
+          </>
+        </TasksContextProvider>
+      </HelmetProvider>
     </ThemeProvider>
 
   )

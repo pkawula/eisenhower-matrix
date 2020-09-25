@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const StyledButton = styled.button`
@@ -10,8 +10,8 @@ const StyledButton = styled.button`
     cursor: pointer;
     font-size: ${({ theme }) => theme.font.size.s};
     font-weight: ${({ theme }) => theme.font.weight.semibold};
-    color: ${({ theme, primary }) => primary ? theme.font.color.secondary : theme.font.color.primary};
-    background-color: ${({ theme, primary }) => primary ? theme.colors.green : theme.bg.primary};
+    color: ${({ theme }) => theme.font.color.secondary};
+    background-color: ${({ theme }) => theme.colors.green};
     box-shadow: ${({ theme }) => theme.boxShadow};
     transition: transform .125s ease-out;
     transform-origin: center center;
@@ -21,17 +21,17 @@ const StyledButton = styled.button`
     &:active {
         transform: scale(.99);
     }
+
+    ${({ cancel }) => cancel && css`
+        background-color: ${({ theme }) => theme.colors.red};
+        color: ${({ theme }) => theme.font.color.secondary};
+    `}
 `;
 
-const Button = ({ primary, children, ...props }) => <StyledButton {...props} primary={primary} >{children}</StyledButton>;
+const Button = ({ cancel, children, ...props }) => <StyledButton {...props} cancel={cancel} >{children}</StyledButton>;
 
 Button.propTypes = {
-    primary: PropTypes.bool,
     children: PropTypes.node.isRequired,
 };
-
-Button.defaultProps = {
-    primary: false
-}
 
 export default Button;

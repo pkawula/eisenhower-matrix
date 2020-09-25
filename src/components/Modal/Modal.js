@@ -7,8 +7,8 @@ const Wrapper = styled.div`
     display: block;
     width: calc(100% - 2em);
     max-width: 700px;
-    height: calc(100% - 2em);
-    max-height: 600px;
+    min-height: 480px;
+    max-height: calc(100% - 2em);
     background-color: ${({ theme }) => theme.bg.primary};
     padding: 2em;
     border-radius: .5em;
@@ -42,7 +42,7 @@ const Wrapper = styled.div`
 const Heading = styled.h2`
     display: block;
     font-size: ${({ theme }) => theme.font.size.m};
-    font-weight: ${({ theme }) => theme.font.weight.semibold};
+    font-weight: ${({ theme }) => theme.font.weight.bold};
     color: ${({ theme }) => theme.font.color.primary};
     margin: 0;
 `;
@@ -55,15 +55,13 @@ const StyledButtonIcon = styled(ButtonIcon)`
 const Modal = ({ title, children, setIsModalOpened, toggleModal }) => {
     const modalRef = useRef(null);
 
-    const listener = e => {
-
-        if (!modalRef.current || modalRef.current.contains(e.target)) return;
-
-        setIsModalOpened(false);
-    }
-
 
     useEffect(() => {
+        const listener = e => {
+            if (!modalRef.current || modalRef.current.contains(e.target)) return;
+            setIsModalOpened(false);
+        }
+
         document.addEventListener('mousedown', listener);
         document.addEventListener('touchdown', listener);
 
@@ -71,7 +69,7 @@ const Modal = ({ title, children, setIsModalOpened, toggleModal }) => {
             document.removeEventListener('mousedown', listener);
             document.removeEventListener('touchdown', listener);
         }
-    });
+    }, [setIsModalOpened]);
 
     return (
         <Wrapper ref={modalRef}>
@@ -86,7 +84,7 @@ Modal.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     setIsModalOpened: PropTypes.func.isRequired,
-    toggleOpened: PropTypes.func.isRequired,
+    toggleModal: PropTypes.func.isRequired,
 }
 
 export default Modal;

@@ -7,6 +7,7 @@ import Header from 'components/Header/Header';
 import TasksWrapper from 'components/TasksWrapper/TasksWrapper';
 import Modal from 'components/Modal/Modal';
 import ButtonIcon from 'components/ButtonIcon/ButtonIcon';
+import Form from 'components/Form/Form';
 
 const StyledButtonIcon = styled(ButtonIcon)`
   position: absolute;
@@ -29,7 +30,8 @@ const Root = () => {
       <Header toggleModal={toggleModal} />
       <TasksWrapper />
       <StyledButtonIcon onClick={toggleModal} />
-      {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>sdhadjas bdkasd</Modal>}
+      {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
+        <Form /></Modal>}
     </ThemeProvider>
 
   )

@@ -38,7 +38,7 @@ const Header = ({ toggleModal }) => (
         <Paragraph>
             The Eisenhower Matrix, also referred to as Urgent-Important Matrix, helps you decide on and prioritize tasks by urgency and importance, sorting out less urgent and important tasks which you should either delegate or not do at all.
         </Paragraph>
-        <Button onClick={toggleModal} primary>Let's add first task</Button>
+        <Button onClick={toggleModal}>Let's add first task</Button>
     </HeaderContainer>
 );
 

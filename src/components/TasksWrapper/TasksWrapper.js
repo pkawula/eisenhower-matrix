@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { TasksContext } from 'contexts/TasksContext';
 
 const Wrapper = styled.main`
     display: block;
@@ -16,10 +17,15 @@ const Message = styled.h2`
     opacity: .7;
 `;
 
-const TasksWrapper = () => (
-    <Wrapper>
-        <Message>nothing todo, yet..</Message>
-    </Wrapper>
-);
+const TasksWrapper = () => {
+    const { tasks } = useContext(TasksContext);
+
+    return (
+        <Wrapper>
+            {!tasks.length > 0 && <Message>nothing todo, yet..</Message>}
+        There are some tasks
+        </Wrapper>
+    )
+}
 
 export default TasksWrapper;

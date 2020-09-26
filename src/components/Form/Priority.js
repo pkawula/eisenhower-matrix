@@ -9,7 +9,7 @@ const PrioritySection = styled.section`
 const Heading = styled.h4`
     font-size: ${({ theme }) => theme.font.size.xxs};
     font-weight: ${({ theme }) => theme.font.weight.semibold};
-    color: ${({ theme }) => theme.colors.gray};
+    color: ${({ theme, isErrored }) => isErrored ? theme.colors.red : theme.colors.gray};
 `;
 
 const Label = styled.label`
@@ -72,14 +72,14 @@ const InputRadio = styled.input`
     }
 `;
 
-const Priority = ({ importance, urgency, onChange }) => {
+const Priority = ({ isErrored, importance, urgency, onChange }) => {
     const handleClick = e => e.preventDefault();
 
     return (
         <>
             {importance &&
                 <PrioritySection>
-                    <Heading>Importance</Heading>
+                    <Heading isErrored={isErrored}>Importance</Heading>
                     <Label green>
                         <InputRadio onChange={onChange} name="importance" id="important" type="radio" />
                         <RadioButton onClick={handleClick} green>important</RadioButton>
@@ -92,7 +92,7 @@ const Priority = ({ importance, urgency, onChange }) => {
             }
             {urgency &&
                 <PrioritySection>
-                    <Heading>Urgency</Heading>
+                    <Heading isErrored={isErrored}>Urgency</Heading>
                     <Label green>
                         <InputRadio onChange={onChange} name="urgency" id="urgent" type="radio" />
                         <RadioButton onClick={handleClick} green>urgent</RadioButton>

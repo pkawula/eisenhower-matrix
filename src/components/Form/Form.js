@@ -45,6 +45,15 @@ const StyledButton = styled(Button)`
     }
 `;
 
+const Error = styled.p`
+    display: block;
+    font-size: ${({ theme }) => theme.font.size.xxs};
+    font-weight: ${({ theme }) => theme.font.weight.semibold};
+    color: ${({ theme }) => theme.colors.red};
+    margin: .5em 0 0;
+    text-align: left;
+`;
+
 const Form = ({ toggleModal }) => {
 
     const { dispatch } = useContext(TasksContext);
@@ -103,10 +112,28 @@ const Form = ({ toggleModal }) => {
         const { title, description } = values;
         const { importance, urgency } = prioritiesChecked;
 
-        if (title === '') setErrors({ title: 'Please give your task a title' });
-        if (description === '') setErrors({ description: 'Please add description' });
-        if (importance === null) setErrors({ importance: 'Please choose how important it is' });
-        if (urgency === null) setErrors({ urgency: 'Please choose how urgent it is' });
+        setErrors({
+            title: '',
+            description: '',
+            importance: '',
+            urgency: ''
+        });
+
+        const errs = [];
+
+        if (title === '') errs.push({ title: 'Title is required' });
+        if (description === '') errs.push({ description: 'Description is required' });
+        if (importance === null) errs.push({ importance: 'Choose the importance' });
+        if (urgency === null) errs.push({ urgency: 'Choose the urgency' });
+
+        if (errs.length > 0) {
+
+            errs.forEach(err => setErrors(err))
+
+            return false;
+        }
+
+        return true;
     }
 
     const handleSubmit = e => {
@@ -114,10 +141,7 @@ const Form = ({ toggleModal }) => {
         const { title, description } = values;
         const { importance, urgency } = prioritiesChecked;
 
-        checkFields();
-
-        console.log(errors)
-
+        if (checkFields() === false) return;
 
         return dispatch({
             type: ADD_TASK,
@@ -128,20 +152,23 @@ const Form = ({ toggleModal }) => {
                 urgency
             }
         });
-
     }
 
     return (
         <FormWrapper onSubmit={handleSubmit}>
             <FormSection>
                 <SectionHeading>Describe your task</SectionHeading>
-                <Input name="title" value={values.title} onChange={handleUserInput} />
-                <Input name="description" value={values.description} onChange={handleUserInput} textarea />
+                <Input isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} />
+                {errors.title && <Error>{errors.title}</Error>}
+                <Input isErrored={errors.description ? true : false} name="description" value={values.description} onChange={handleUserInput} textarea />
+                {errors.description && <Error>{errors.description}</Error>}
             </FormSection>
             <FormSection>
                 <SectionHeading>Choose priority</SectionHeading>
-                <Priority onChange={handleUserPick} importance />
-                <Priority onChange={handleUserPick} urgency />
+                <Priority isErrored={errors.importance ? true : false} onChange={handleUserPick} importance />
+                {errors.importance && <Error>{errors.importance}</Error>}
+                <Priority isErrored={errors.urgency ? true : false} onChange={handleUserPick} urgency />
+                {errors.urgency && <Error>{errors.urgency}</Error>}
             </FormSection>
             <ButtonsContainer>
                 <StyledButton type="submit" primary>Save</StyledButton>

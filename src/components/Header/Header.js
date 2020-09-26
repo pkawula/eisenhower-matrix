@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Button from 'components/Button/Button';
+import { TasksContext } from 'contexts/TasksContext';
 
 const HeaderContainer = styled.header`
     display: flex;
@@ -32,14 +33,18 @@ const Paragraph = styled.p`
     color: ${({ theme }) => theme.font.color.primary};
 `;
 
-const Header = ({ toggleModal }) => (
-    <HeaderContainer>
-        <Heading>Eisenhower Matrix</Heading>
-        <Paragraph>
-            The Eisenhower Matrix, also referred to as Urgent-Important Matrix, helps you decide on and prioritize tasks by urgency and importance, sorting out less urgent and important tasks which you should either delegate or not do at all.
+const Header = ({ toggleModal }) => {
+    const { tasks } = useContext(TasksContext);
+
+    return (
+        <HeaderContainer>
+            <Heading>Eisenhower Matrix</Heading>
+            <Paragraph>
+                The Eisenhower Matrix, also referred to as Urgent-Important Matrix, helps you decide on and prioritize tasks by urgency and importance, sorting out less urgent and important tasks which you should either delegate or not do at all.
         </Paragraph>
-        <Button onClick={toggleModal}>Let's add first task</Button>
-    </HeaderContainer>
-);
+            {!tasks.length > 0 && <Button onClick={toggleModal}>Let's add first task</Button>}
+        </HeaderContainer>
+    )
+};
 
 export default Header;

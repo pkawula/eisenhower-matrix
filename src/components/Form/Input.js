@@ -13,14 +13,14 @@ const Placeholder = styled.span`
     display: block;
     font-size: ${({ theme }) => theme.font.size.xxs};
     font-weight: ${({ theme }) => theme.font.weight.semibold};
-    color: ${({ theme }) => theme.colors.gray};
+    color: ${({ theme, isErrored }) => isErrored ? theme.colors.red : theme.colors.gray};
 `;
 
 const InputField = styled.input`
     display: block;
     width: 100%;
     border: none;
-    border-bottom: 2px solid ${({ theme }) => theme.colors.gray};
+    border-bottom: 2px solid ${({ theme, isErrored }) => isErrored ? theme.colors.red : theme.colors.gray};
     font-size: ${({ theme }) => theme.font.size.s};
     font-weight: ${({ theme }) => theme.font.weight.normal};
     color: ${({ theme }) => theme.font.color.primary};
@@ -40,7 +40,7 @@ const Textarea = styled.textarea`
     display: block;
     width: 100%;
     border: none;
-    border-bottom: 2px solid ${({ theme }) => theme.colors.gray};
+    border-bottom: 2px solid ${({ theme, isErrored }) => isErrored ? theme.colors.red : theme.colors.gray};
     font-size: ${({ theme }) => theme.font.size.s};
     font-weight: ${({ theme }) => theme.font.weight.normal};
     color: ${({ theme }) => theme.font.color.primary};
@@ -63,19 +63,19 @@ const Textarea = styled.textarea`
     }
 `;
 
-const Input = ({ textarea, value, name, onChange }) => {
+const Input = ({ isErrored, textarea, value, name, onChange }) => {
 
     return (
         <>
             {textarea ?
                 <Label>
-                    <Textarea id={name} value={value} onChange={onChange} name={name} />
-                    <Placeholder>Description</Placeholder>
+                    <Textarea isErrored={isErrored} id={name} value={value} onChange={onChange} name={name} />
+                    <Placeholder isErrored={isErrored}>Description</Placeholder>
                 </Label>
                 :
                 <Label>
-                    <InputField value={value} onChange={onChange} type="text" name={name} id={name} />
-                    <Placeholder>Title</Placeholder>
+                    <InputField isErrored={isErrored} value={value} onChange={onChange} type="text" name={name} id={name} />
+                    <Placeholder isErrored={isErrored}>Title</Placeholder>
                 </Label>
             }
         </>
@@ -84,6 +84,7 @@ const Input = ({ textarea, value, name, onChange }) => {
 
 Input.propTypes = {
     textarea: PropTypes.bool,
+    isErrored: PropTypes.bool,
     value: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -91,6 +92,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
     textarea: false,
+    isErrored: false,
 }
 
 export default Input;

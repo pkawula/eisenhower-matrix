@@ -143,6 +143,8 @@ const Form = ({ toggleModal }) => {
 
         if (checkFields() === false) return;
 
+        toggleModal();
+
         return dispatch({
             type: ADD_TASK,
             payload: {

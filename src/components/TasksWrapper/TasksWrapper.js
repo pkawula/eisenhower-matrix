@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TasksContext } from 'contexts/TasksContext';
+import { REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
@@ -117,6 +118,11 @@ const StyledButton = styled(Button)`
     &:last-of-type {
         margin-right: 0;
     }
+
+    ${({ done }) => done && css`
+        text-decoration: line-through;
+        opacity: .5;
+    `}
 `;
 
 const DetailsSection = styled.section`
@@ -161,7 +167,7 @@ const DetailsSectionTitle = styled.h3`
     font-size: ${({ theme }) => theme.font.size.s};
     font-weight: ${({ theme }) => theme.font.weight.semibold};
     text-align: left;
-    margin: 0 0 1em;
+    margin: 0 0 .5em;
 `;
 
 const DetailsSectionDescription = styled.p`
@@ -196,13 +202,42 @@ const StyledActionButton = styled(Button)`
 `;
 
 const TasksWrapper = () => {
-    const { tasks } = useContext(TasksContext);
+    const { tasks, dispatch } = useContext(TasksContext);
 
     const [isModalOpened, setIsModalOpened] = useState(false);
+    const [chosenTask, setChosenTask] = useState({});
 
     const toggleModal = () => setIsModalOpened(!isModalOpened);
 
-    const { title, description } = { title: "your title", description: 'sdnasjdbjasfsaskd jksadb kjasjhd ksajf ks fiag f aif sf a f asf  fas' };
+    const chooseTask = task => {
+        toggleModal();
+        setChosenTask(task);
+    }
+
+    const deleteTask = id => {
+        dispatch({
+            type: REMOVE_TASK,
+            id
+        });
+
+        toggleModal();
+    }
+
+    const markAsDone = ({ ID, title, description, importance, urgency, done }) => {
+        dispatch({
+            type: UPDATE_TASK,
+            payload: {
+                ID,
+                title: title,
+                description: description,
+                importance: importance,
+                urgency: urgency,
+                done: !done
+            }
+        });
+
+        toggleModal();
+    }
 
     return (
         <Wrapper>
@@ -214,26 +249,26 @@ const TasksWrapper = () => {
                     <TasksGroupWrapper>
                         <TasksGroup green>
                             <TasksGroupTitle>Do first</TasksGroupTitle>
-                            {tasks.filter(({ importance, urgency }) => importance && urgency).map(({ title }) =>
-                                <StyledButton onClick={toggleModal}>{title}</StyledButton>
+                            {tasks.filter(({ importance, urgency }) => importance && urgency).map(task =>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup blue>
                             <TasksGroupTitle>Schedule</TasksGroupTitle>
-                            {tasks.filter(({ importance, urgency }) => importance && !urgency).map(({ title }) =>
-                                <StyledButton>{title}</StyledButton>
+                            {tasks.filter(({ importance, urgency }) => importance && !urgency).map(task =>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup orange>
                             <TasksGroupTitle>Delegate</TasksGroupTitle>
-                            {tasks.filter(({ importance, urgency }) => !importance && urgency).map(({ title }) =>
-                                <StyledButton>{title}</StyledButton>
+                            {tasks.filter(({ importance, urgency }) => !importance && urgency).map(task =>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup red>
                             <TasksGroupTitle>Don't do</TasksGroupTitle>
-                            {tasks.filter(({ importance, urgency }) => !importance && !urgency).map(({ title }) =>
-                                <StyledButton>{title}</StyledButton>
+                            {tasks.filter(({ importance, urgency }) => !importance && !urgency).map(task =>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
                             )}
                         </TasksGroup>
                     </TasksGroupWrapper>
@@ -243,21 +278,21 @@ const TasksWrapper = () => {
                                 <DetailsSectionTitle>
                                     Priority
                                 </DetailsSectionTitle>
-                                <DetailsSectionPriority green>Important</DetailsSectionPriority>
-                                <DetailsSectionPriority orange>Urgent</DetailsSectionPriority>
+                                <DetailsSectionPriority green>{chosenTask.importance ? 'important' : 'less important'}</DetailsSectionPriority>
+                                <DetailsSectionPriority orange>{chosenTask.urgency ? 'urgent' : 'less urgent'}</DetailsSectionPriority>
                             </DetailsSection>
                             <DetailsSection>
                                 <DetailsSectionTitle>
-                                    {title}
+                                    {chosenTask.title}
                                 </DetailsSectionTitle>
                                 <DetailsSectionDescription>
-                                    {description}
+                                    {chosenTask.description}
                                 </DetailsSectionDescription>
                             </DetailsSection>
                             <ButtonsWrapper>
-                                <StyledActionButton>Mark as done</StyledActionButton>
+                                <StyledActionButton onClick={() => markAsDone(chosenTask)}>{chosenTask.done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
                                 <StyledActionButton secondary>Edit</StyledActionButton>
-                                <StyledActionButton onClick={toggleModal} cancel>Delete</StyledActionButton>
+                                <StyledActionButton onClick={() => deleteTask(chosenTask.ID)} cancel>Delete</StyledActionButton>
                             </ButtonsWrapper>
                         </Modal>
                     }

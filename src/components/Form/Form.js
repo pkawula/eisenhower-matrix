@@ -151,7 +151,8 @@ const Form = ({ toggleModal }) => {
                 title,
                 description,
                 importance,
-                urgency
+                urgency,
+                done: false,
             }
         });
     }

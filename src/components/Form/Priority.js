@@ -15,21 +15,23 @@ const Heading = styled.h4`
 const Label = styled.label`
     cursor: pointer;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 
     &:first-child {
-        button {
+        span {
             margin-right: .5em;
         }
     }
 
     &:last-child {
-        button {
+        span {
             margin-left: .5em;
         }
     }
 `;
 
-const RadioButton = styled.button`
+const RadioButton = styled.span`
     display: inline-block;
     margin: 0;
     padding: .25em .5em;
@@ -42,8 +44,6 @@ const RadioButton = styled.button`
     box-shadow: ${({ theme }) => theme.boxShadow};
     transition: transform .125s ease-out;
     transform-origin: center center;
-    outline-offset: .25em;
-    outline-color: ${({ theme }) => theme.colors.green};
     pointer-events: none;
 
     ${({ green }) => green && css`
@@ -58,16 +58,29 @@ const RadioButton = styled.button`
 `;
 
 const InputRadio = styled.input`
-    width: 0px;
-    height: 0px;
+    width: 100%;
+    height: 200%;
     opacity: 0;
     pointer-events: none;
-    visibility: hidden;
     position: absolute;
+    cursor: pointer;
+
+    &:focus {
+        ~ span { 
+            outline: 2px solid ${({ theme }) => theme.colors.green};
+            outline-offset: 2px;
+        }
+    }
 
     &:checked {
-        ~ button {
+        ~ span {
             border-color: ${({ theme }) => theme.colors.blue};
+        }
+    }
+
+    &:checked:focus {
+        ~ span {
+            outline: none;
         }
     }
 `;

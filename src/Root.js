@@ -11,9 +11,15 @@ import Form from 'components/Form/Form';
 import TasksContextProvider from 'contexts/TasksContext';
 
 const StyledButtonIcon = styled(ButtonIcon)`
-  position: absolute;
-  bottom: 2em;
-  right: 2em;
+  position: fixed;
+  bottom: 1em;
+  right: calc(((100vw - 1200px)/2) + 1em);
+  opacity: .7;
+  transition: opacity .125s linear;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const Root = () => {

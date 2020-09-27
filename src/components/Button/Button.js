@@ -32,6 +32,11 @@ const Button = ({ cancel, children, ...props }) => <StyledButton {...props} canc
 
 Button.propTypes = {
     children: PropTypes.node.isRequired,
+    cancel: PropTypes.bool,
 };
+
+Button.defaultProps = {
+    cancel: false
+}
 
 export default Button;

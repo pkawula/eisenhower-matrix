@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const PrioritySection = styled.section`
     display: block;
@@ -86,38 +87,48 @@ const InputRadio = styled.input`
 `;
 
 const Priority = ({ isErrored, importance, urgency, onChange }) => {
-    const handleClick = e => e.preventDefault();
 
     return (
         <>
             {importance &&
                 <PrioritySection>
                     <Heading isErrored={isErrored}>Importance</Heading>
-                    <Label green>
+                    <Label>
                         <InputRadio onChange={onChange} name="importance" id="important" type="radio" />
-                        <RadioButton onClick={handleClick} green>important</RadioButton>
+                        <RadioButton green>important</RadioButton>
                     </Label>
                     <Label>
                         <InputRadio onChange={onChange} name="importance" id="less_important" type="radio" />
-                        <RadioButton onClick={handleClick} orange>less important</RadioButton>
+                        <RadioButton orange>less important</RadioButton>
                     </Label>
                 </PrioritySection>
             }
             {urgency &&
                 <PrioritySection>
                     <Heading isErrored={isErrored}>Urgency</Heading>
-                    <Label green>
+                    <Label>
                         <InputRadio onChange={onChange} name="urgency" id="urgent" type="radio" />
-                        <RadioButton onClick={handleClick} green>urgent</RadioButton>
+                        <RadioButton green>urgent</RadioButton>
                     </Label>
                     <Label>
                         <InputRadio onChange={onChange} name="urgency" id="less_urgent" type="radio" />
-                        <RadioButton onClick={handleClick} orange>less urgent</RadioButton>
+                        <RadioButton orange>less urgent</RadioButton>
                     </Label>
                 </PrioritySection>
             }
         </>
     )
 };
+
+Priority.propTypes = {
+    importance: PropTypes.bool,
+    urgency: PropTypes.bool,
+    isErrored: PropTypes.bool.isRequired,
+};
+
+PropTypes.defaultProps = {
+    importance: false,
+    urgency: false,
+}
 
 export default Priority;

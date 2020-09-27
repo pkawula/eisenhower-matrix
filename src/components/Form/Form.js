@@ -1,10 +1,11 @@
 import React, { useReducer, useContext } from 'react';
-import Button from 'components/Button/Button';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { TasksContext } from 'contexts/TasksContext';
+import { ADD_TASK, UPDATE_TASK } from 'reducers/Tasks';
+import Button from 'components/Button/Button';
 import Input from './Input';
 import Priority from './Priority';
-import { TasksContext } from 'contexts/TasksContext';
-import { ADD_TASK } from 'reducers/Tasks';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -54,18 +55,18 @@ const Error = styled.p`
     text-align: left;
 `;
 
-const Form = ({ toggleModal }) => {
+const Form = ({ toggleModal, editData: { title, description, importance, urgency, done, ID } }) => {
 
     const { dispatch } = useContext(TasksContext);
 
     const [values, setValues] = useReducer((state, newState) => ({ ...state, ...newState }), {
-        title: '',
-        description: ''
+        title,
+        description
     });
 
     const [prioritiesChecked, setPrioritiesChecked] = useReducer((state, newState) => ({ ...state, ...newState }), {
-        importance: null,
-        urgency: null,
+        importance,
+        urgency,
     });
 
     const [errors, setErrors] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -145,6 +146,18 @@ const Form = ({ toggleModal }) => {
 
         toggleModal();
 
+        if (ID) return dispatch({
+            type: UPDATE_TASK,
+            payload: {
+                ID,
+                title,
+                description,
+                importance,
+                urgency,
+                done
+            }
+        })
+
         return dispatch({
             type: ADD_TASK,
             payload: {
@@ -168,9 +181,9 @@ const Form = ({ toggleModal }) => {
             </FormSection>
             <FormSection>
                 <SectionHeading>Choose priority</SectionHeading>
-                <Priority isErrored={errors.importance ? true : false} onChange={handleUserPick} importance />
+                <Priority chosen={importance} isErrored={errors.importance ? true : false} onChange={handleUserPick} importance />
                 {errors.importance && <Error>{errors.importance}</Error>}
-                <Priority isErrored={errors.urgency ? true : false} onChange={handleUserPick} urgency />
+                <Priority chosen={urgency} isErrored={errors.urgency ? true : false} onChange={handleUserPick} urgency />
                 {errors.urgency && <Error>{errors.urgency}</Error>}
             </FormSection>
             <ButtonsContainer>
@@ -179,6 +192,29 @@ const Form = ({ toggleModal }) => {
             </ButtonsContainer>
         </FormWrapper>
     );
+};
+
+Form.propTypes = {
+    editData: PropTypes.shape({
+        title: PropTypes.string,
+        description: PropTypes.string,
+        importance: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+        urgency: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+        done: PropTypes.bool,
+        ID: PropTypes.string,
+    }),
+    toggleModal: PropTypes.func.isRequired,
+};
+
+Form.defaultProps = {
+    editData: {
+        title: '',
+        description: '',
+        importance: null,
+        urgency: null,
+        done: false,
+        ID: null,
+    },
 };
 
 export default Form;

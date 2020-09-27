@@ -4,6 +4,7 @@ import { TasksContext } from 'contexts/TasksContext';
 import { REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
+import Form from 'components/Form/Form';
 
 const Wrapper = styled.main`
     display: block;
@@ -204,13 +205,15 @@ const StyledActionButton = styled(Button)`
 const TasksWrapper = () => {
     const { tasks, dispatch } = useContext(TasksContext);
 
-    const [isModalOpened, setIsModalOpened] = useState(false);
+    const [isPreviewModalOpened, setIsPreviewModalOpened] = useState(false);
+    const [isEditModalOpened, setIsEditModalOpened] = useState(false);
     const [chosenTask, setChosenTask] = useState({});
 
-    const toggleModal = () => setIsModalOpened(!isModalOpened);
+    const togglePreviewModal = () => setIsPreviewModalOpened(!isPreviewModalOpened);
+    const toggleEditModal = () => setIsEditModalOpened(!isEditModalOpened);
 
     const chooseTask = task => {
-        toggleModal();
+        togglePreviewModal();
         setChosenTask(task);
     }
 
@@ -220,7 +223,7 @@ const TasksWrapper = () => {
             id
         });
 
-        toggleModal();
+        togglePreviewModal();
     }
 
     const markAsDone = ({ ID, title, description, importance, urgency, done }) => {
@@ -236,7 +239,12 @@ const TasksWrapper = () => {
             }
         });
 
-        toggleModal();
+        togglePreviewModal();
+    }
+
+    const editTask = () => {
+        togglePreviewModal();
+        toggleEditModal();
     }
 
     return (
@@ -272,8 +280,8 @@ const TasksWrapper = () => {
                             )}
                         </TasksGroup>
                     </TasksGroupWrapper>
-                    {isModalOpened &&
-                        <Modal title='Task details' setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
+                    {isPreviewModalOpened &&
+                        <Modal title='Task details' setIsModalOpened={setIsPreviewModalOpened} toggleModal={togglePreviewModal}>
                             <DetailsSection>
                                 <DetailsSectionTitle>
                                     Priority
@@ -291,9 +299,14 @@ const TasksWrapper = () => {
                             </DetailsSection>
                             <ButtonsWrapper>
                                 <StyledActionButton onClick={() => markAsDone(chosenTask)}>{chosenTask.done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
-                                <StyledActionButton secondary>Edit</StyledActionButton>
+                                <StyledActionButton onClick={() => editTask()} secondary>Edit</StyledActionButton>
                                 <StyledActionButton onClick={() => deleteTask(chosenTask.ID)} cancel>Delete</StyledActionButton>
                             </ButtonsWrapper>
+                        </Modal>
+                    }
+                    {isEditModalOpened &&
+                        <Modal title="Edit task" setIsModalOpened={setIsEditModalOpened} toggleModal={toggleEditModal}>
+                            <Form toggleModal={toggleEditModal} editData={chosenTask} />
                         </Modal>
                     }
                 </>

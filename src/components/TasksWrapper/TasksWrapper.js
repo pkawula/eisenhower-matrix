@@ -5,6 +5,7 @@ import { REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import Form from 'components/Form/Form';
+import { ReactComponent as ViewIcon } from 'icons/view.svg';
 
 const Wrapper = styled.main`
     display: block;
@@ -202,6 +203,14 @@ const StyledActionButton = styled(Button)`
     }
 `;
 
+const StyledViewIcon = styled(ViewIcon)`
+    width: 1.5em;
+    height: 1.5em;
+    fill: ${({ theme }) => theme.colors.gray};
+    vertical-align: middle;
+    margin-left: .25em;
+`;
+
 const TasksWrapper = () => {
     const { tasks, dispatch } = useContext(TasksContext);
 
@@ -258,25 +267,25 @@ const TasksWrapper = () => {
                         <TasksGroup green>
                             <TasksGroupTitle>Do first</TasksGroupTitle>
                             {tasks.filter(({ importance, urgency }) => importance && urgency).map(task =>
-                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title} <StyledViewIcon /></StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup blue>
                             <TasksGroupTitle>Schedule</TasksGroupTitle>
                             {tasks.filter(({ importance, urgency }) => importance && !urgency).map(task =>
-                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title} <StyledViewIcon /></StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup orange>
                             <TasksGroupTitle>Delegate</TasksGroupTitle>
                             {tasks.filter(({ importance, urgency }) => !importance && urgency).map(task =>
-                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title} <StyledViewIcon /></StyledButton>
                             )}
                         </TasksGroup>
                         <TasksGroup red>
                             <TasksGroupTitle>Don't do</TasksGroupTitle>
                             {tasks.filter(({ importance, urgency }) => !importance && !urgency).map(task =>
-                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title}</StyledButton>
+                                <StyledButton done={task.done ? true : false} key={task.ID} onClick={() => chooseTask(task)}>{task.title} <StyledViewIcon /></StyledButton>
                             )}
                         </TasksGroup>
                     </TasksGroupWrapper>

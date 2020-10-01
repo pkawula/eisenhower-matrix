@@ -62,7 +62,7 @@ const ButtonIcon = ({ close, children, ...props }) => <Button {...props} close={
 
 ButtonIcon.propTypes = {
     close: PropTypes.bool,
-    children: PropTypes.oneOf([PropTypes.node, PropTypes.element]),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
 };
 
 ButtonIcon.defaultProps = {

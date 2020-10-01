@@ -17,6 +17,7 @@ const StyledButton = styled.button`
     transform-origin: center center;
     outline-offset: .25em;
     outline-color: ${({ theme }) => theme.colors.green};
+    text-decoration: none;
 
     &:active {
         transform: scale(.99);

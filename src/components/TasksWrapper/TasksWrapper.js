@@ -6,6 +6,7 @@ import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import Form from 'components/Form/Form';
 import { ReactComponent as ViewIcon } from 'icons/view.svg';
+import Heading from 'components/Heading/Heading';
 
 const Wrapper = styled.main`
     display: block;
@@ -20,14 +21,6 @@ const Message = styled.h2`
     color: ${({ theme }) => theme.colors.gray};
     text-align: center;
     opacity: .7;
-`;
-
-const Heading = styled.h2`
-    font-size: ${({ theme }) => theme.font.size.l};
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    color: ${({ theme }) => theme.font.color.primary};
-    text-align: center;
-    margin: 0 auto 2em;
 `;
 
 const TasksGroupWrapper = styled.div`

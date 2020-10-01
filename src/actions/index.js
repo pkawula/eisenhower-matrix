@@ -18,3 +18,20 @@ export const Tasks = {
         Tasks.save(item);
     },
 };
+
+export const ArchivedTasks = {
+    get: () => window.localStorage.getItem('archivedTasks'),
+    save: item => {
+        if (ArchivedTasks.get()) {
+            const archivedTasks = JSON.parse(ArchivedTasks.get());
+            archivedTasks.push(item);
+
+            window.localStorage.setItem('archivedTasks', JSON.stringify(archivedTasks));
+        } else if (item.length) {
+            window.localStorage.setItem('archivedTasks', JSON.stringify(item));
+        } else {
+            window.localStorage.setItem('archivedTasks', JSON.stringify([item]));
+        }
+    },
+    delete: () => window.localStorage.removeItem('archivedTasks'),
+};

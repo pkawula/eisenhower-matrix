@@ -7,6 +7,7 @@ const Label = styled.label`
     flex-direction: column-reverse;
     justify-content: flex-start;
     align-items: flex-start;
+    position: relative;
 `;
 
 const Placeholder = styled.span`
@@ -63,7 +64,16 @@ const Textarea = styled.textarea`
     }
 `;
 
-const Input = ({ isErrored, textarea, value, name, onChange, placeholder }) => {
+const StyledCounter = styled.span`
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: ${({ theme }) => theme.font.size.xxs};
+    font-weight: ${({ theme }) => theme.font.weight.semibold};
+    color: ${({ theme }) => theme.colors.gray};
+`;
+
+const Input = ({ isErrored, textarea, value, name, onChange, placeholder, inputSignCount }) => {
 
     return (
         <>
@@ -76,6 +86,7 @@ const Input = ({ isErrored, textarea, value, name, onChange, placeholder }) => {
                 <Label>
                     <InputField placeholder={placeholder} isErrored={isErrored} value={value} onChange={onChange} type="text" name={name} id={name} />
                     <Placeholder isErrored={isErrored}>{placeholder}</Placeholder>
+                    <StyledCounter>{inputSignCount}/30</StyledCounter>
                 </Label>
             }
         </>
@@ -85,6 +96,7 @@ const Input = ({ isErrored, textarea, value, name, onChange, placeholder }) => {
 Input.propTypes = {
     textarea: PropTypes.bool,
     isErrored: PropTypes.bool,
+    inputSignCount: PropTypes.number,
     value: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -94,6 +106,7 @@ Input.propTypes = {
 Input.defaultProps = {
     textarea: false,
     isErrored: false,
+    inputSignCount: 0,
 }
 
 export default Input;

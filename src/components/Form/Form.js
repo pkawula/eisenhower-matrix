@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useContext, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { TasksContext } from 'contexts/TasksContext';
@@ -59,6 +59,8 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
 
     const { dispatch } = useContext(TasksContext);
 
+    const [inputSignCount, setInputSignCount] = useState(0);
+
     const [values, setValues] = useReducer((state, newState) => ({ ...state, ...newState }), {
         title,
         description
@@ -79,6 +81,16 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
     const handleUserInput = e => {
         const { value } = e.target;
         const { name: type } = e.target;
+
+        if (type === "title") {
+            setInputSignCount(value.length);
+
+            if (value.length > 30) {
+                setInputSignCount(30);
+
+                return setValues({ title: values.title })
+            };
+        }
 
         setValues({ [type]: value });
     }
@@ -174,7 +186,7 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
         <FormWrapper onSubmit={handleSubmit}>
             <FormSection>
                 <SectionHeading>Describe your task</SectionHeading>
-                <Input placeholder="title" isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} />
+                <Input placeholder="title" isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} inputSignCount={inputSignCount} />
                 {errors.title && <Error>{errors.title}</Error>}
                 <Input placeholder="description" isErrored={errors.description ? true : false} name="description" value={values.description} onChange={handleUserInput} textarea />
                 {errors.description && <Error>{errors.description}</Error>}

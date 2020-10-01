@@ -63,19 +63,19 @@ const Textarea = styled.textarea`
     }
 `;
 
-const Input = ({ isErrored, textarea, value, name, onChange }) => {
+const Input = ({ isErrored, textarea, value, name, onChange, placeholder }) => {
 
     return (
         <>
             {textarea ?
                 <Label>
-                    <Textarea isErrored={isErrored} id={name} value={value} onChange={onChange} name={name} />
-                    <Placeholder isErrored={isErrored}>Description</Placeholder>
+                    <Textarea placeholder={placeholder} isErrored={isErrored} id={name} value={value} onChange={onChange} name={name} />
+                    <Placeholder isErrored={isErrored}>{placeholder}</Placeholder>
                 </Label>
                 :
                 <Label>
-                    <InputField isErrored={isErrored} value={value} onChange={onChange} type="text" name={name} id={name} />
-                    <Placeholder isErrored={isErrored}>Title</Placeholder>
+                    <InputField placeholder={placeholder} isErrored={isErrored} value={value} onChange={onChange} type="text" name={name} id={name} />
+                    <Placeholder isErrored={isErrored}>{placeholder}</Placeholder>
                 </Label>
             }
         </>
@@ -88,6 +88,7 @@ Input.propTypes = {
     value: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    placeholder: PropTypes.string.isRequired,
 };
 
 Input.defaultProps = {

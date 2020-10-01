@@ -174,9 +174,9 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
         <FormWrapper onSubmit={handleSubmit}>
             <FormSection>
                 <SectionHeading>Describe your task</SectionHeading>
-                <Input isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} />
+                <Input placeholder="title" isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} />
                 {errors.title && <Error>{errors.title}</Error>}
-                <Input isErrored={errors.description ? true : false} name="description" value={values.description} onChange={handleUserInput} textarea />
+                <Input placeholder="description" isErrored={errors.description ? true : false} name="description" value={values.description} onChange={handleUserInput} textarea />
                 {errors.description && <Error>{errors.description}</Error>}
             </FormSection>
             <FormSection>

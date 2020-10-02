@@ -204,8 +204,8 @@ const StyledViewIcon = styled(ViewIcon)`
     margin-left: .25em;
 `;
 
-const TasksWrapper = () => {
-    const { tasks, dispatch } = useContext(TasksContext);
+const TasksWrapper = ({ tasks }) => {
+    const { dispatch } = useContext(TasksContext);
 
     const [isPreviewModalOpened, setIsPreviewModalOpened] = useState(false);
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);

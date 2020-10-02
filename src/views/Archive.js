@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { routes } from 'routes';
 import Header from 'components/Header/Header';
 import Heading from 'components/Heading/Heading';
+import TasksWrapper from 'components/TasksWrapper/TasksWrapper';
+import { ArchivedTasksContext } from 'contexts/ArchivedTasksContext';
 
 const Wrapper = styled.main`
     width: 100%;
@@ -35,15 +37,18 @@ const StyledLink = styled(Link)`
 
 `;
 
-const Archive = () => (
-    <>
-        <Header />
-        <Wrapper>
-            <Heading>Archive</Heading>
-            <StyledLink to={routes.home}>Home</StyledLink>
-
-        </Wrapper>
-    </>
-);
+const Archive = () => {
+    const { archivedTasks } = useContext(ArchivedTasksContext);
+    return (
+        <>
+            <Header />
+            <Wrapper>
+                <Heading>Archive</Heading>
+                <StyledLink to={routes.home}>Home</StyledLink>
+                <TasksWrapper tasks={archivedTasks} />
+            </Wrapper>
+        </>
+    )
+}
 
 export default Archive;

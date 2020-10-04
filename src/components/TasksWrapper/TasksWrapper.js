@@ -6,7 +6,10 @@ import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import Form from 'components/Form/Form';
 import { ReactComponent as ViewIcon } from 'icons/view.svg';
-import Heading from 'components/Heading/Heading';
+import { ArchivedTasksContext } from 'contexts/ArchivedTasksContext';
+import { ARCHIVE_TASK } from 'reducers/ArchivedTasks';
+import { useLocation } from 'react-router-dom';
+import { routes } from 'routes';
 
 const Wrapper = styled.main`
     display: block;
@@ -178,13 +181,19 @@ const ButtonsWrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
     margin-top: 2em;
+    flex-wrap: wrap;
 `;
 
 const StyledActionButton = styled(Button)`
-    margin: 0 .5em;
+    margin: .5em;
 
     ${({ secondary }) => secondary && css`
         background-color: ${({ theme }) => theme.colors.blue};
+    `}
+
+    ${({ archive }) => archive && css`
+        background-color: ${({ theme }) => theme.colors.gray};
+        color: ${({ theme }) => theme.font.color.secondary};
     `}
 
     &:first-of-type {
@@ -206,6 +215,9 @@ const StyledViewIcon = styled(ViewIcon)`
 
 const TasksWrapper = ({ tasks }) => {
     const { dispatch } = useContext(TasksContext);
+    const { dispatch: archiveDispatch } = useContext(ArchivedTasksContext);
+
+    const location = useLocation();
 
     const [isPreviewModalOpened, setIsPreviewModalOpened] = useState(false);
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);
@@ -219,34 +231,40 @@ const TasksWrapper = ({ tasks }) => {
         setChosenTask(task);
     }
 
-    const deleteTask = id => {
+    const deleteTask = () => {
         dispatch({
             type: REMOVE_TASK,
-            id
+            id: chosenTask.ID
         });
 
         togglePreviewModal();
     }
 
-    const markAsDone = ({ ID, title, description, importance, urgency, done }) => {
+    const toggleDone = () => {
+        const task = tasks.filter(({ ID }) => ID === chosenTask.ID)[0];
         dispatch({
             type: UPDATE_TASK,
             payload: {
-                ID,
-                title: title,
-                description: description,
-                importance: importance,
-                urgency: urgency,
-                done: !done
+                ...task,
+                done: !task.done
             }
         });
-
-        togglePreviewModal();
     }
 
     const editTask = () => {
         togglePreviewModal();
         toggleEditModal();
+    }
+
+    const archiveTask = () => {
+        archiveDispatch({
+            type: ARCHIVE_TASK,
+            payload: {
+                ...chosenTask,
+            }
+        });
+
+        deleteTask();
     }
 
     return (
@@ -255,7 +273,6 @@ const TasksWrapper = ({ tasks }) => {
                 <Message>nothing todo, yet..</Message>
                 :
                 <>
-                    <Heading>Your tasks</Heading>
                     <TasksGroupWrapper>
                         <TasksGroup green>
                             <TasksGroupTitle>Do first</TasksGroupTitle>
@@ -300,9 +317,16 @@ const TasksWrapper = ({ tasks }) => {
                                 </DetailsSectionDescription>
                             </DetailsSection>
                             <ButtonsWrapper>
-                                <StyledActionButton onClick={() => markAsDone(chosenTask)}>{chosenTask.done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
-                                <StyledActionButton onClick={() => editTask()} secondary>Edit</StyledActionButton>
-                                <StyledActionButton onClick={() => deleteTask(chosenTask.ID)} cancel>Delete</StyledActionButton>
+                                {tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done && <StyledActionButton archive onClick={archiveTask}>{
+                                    location.pathname === routes.home ? "Archive" : "Unarchive"
+                                }</StyledActionButton>}
+                                {location.pathname === routes.home && (
+                                    <>
+                                        <StyledActionButton onClick={editTask} secondary>Edit</StyledActionButton>
+                                        <StyledActionButton onClick={() => toggleDone()}>{tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
+                                    </>
+                                )}
+                                <StyledActionButton onClick={deleteTask} cancel>Delete</StyledActionButton>
                             </ButtonsWrapper>
                         </Modal>
                     }

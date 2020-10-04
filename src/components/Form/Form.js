@@ -17,8 +17,12 @@ const FormWrapper = styled.form`
 
 const FormSection = styled.section`
     display: block;
-    width: 46%;
+    width: 100%;
     margin: 0;
+
+    @media screen and (min-width: 767px) {
+        width: 46%;
+    }
 `;
 
 const SectionHeading = styled.h3`
@@ -26,7 +30,11 @@ const SectionHeading = styled.h3`
     font-size: ${({ theme }) => theme.font.size.s};
     font-weight: ${({ theme }) => theme.font.weight.bold};
     color: ${({ theme }) => theme.font.color.primary};
-    margin: 0 0 1em;
+    margin: 1em 0;
+
+    @media screen and (min-width: 767px) {
+        margin: 0 0 1em;
+    }
 `;
 
 const ButtonsContainer = styled.div`

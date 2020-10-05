@@ -295,7 +295,7 @@ const TasksWrapper = ({ tasks }) => {
     return (
         <Wrapper>
             {!tasks.length > 0 ?
-                <Message>nothing todo, yet..</Message>
+                <Message>{location.pathname === routes.home ? 'nothing todo, yet..' : 'the archive is empty..'}</Message>
                 :
                 <>
                     <TasksGroupWrapper>

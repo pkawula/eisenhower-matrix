@@ -14,38 +14,14 @@ const Heading = styled.h4`
 `;
 
 const Label = styled.label`
-    cursor: pointer;
     width: 100%;
-    position: relative;
-    overflow: hidden;
-
-    &:first-child {
-        span {
-            margin-right: .5em;
-        }
-    }
-
-    &:last-child {
-        span {
-            margin-left: .5em;
-        }
-    }
-`;
-
-const RadioButton = styled.span`
-    display: inline-block;
-    margin: 0;
+    cursor: pointer;
     padding: .25em .5em;
     border-radius: .5em;
-    text-align: center;
     border: 2px solid;
-    font-size: ${({ theme }) => theme.font.size.s};
-    font-weight: ${({ theme }) => theme.font.weight.normal};
-    color: ${({ theme }) => theme.font.color.secondary};
     box-shadow: ${({ theme }) => theme.boxShadow};
-    transition: transform .125s ease-out;
-    transform-origin: center center;
-    pointer-events: none;
+    color: ${({ theme }) => theme.font.color.secondary};
+    position: relative;
 
     ${({ green }) => green && css`
         background-color: ${({ theme }) => theme.colors.green};
@@ -56,34 +32,29 @@ const RadioButton = styled.span`
         background-color: ${({ theme }) => theme.colors.orange};
         border-color: ${({ theme }) => theme.colors.orange};
     `};
+
+    &:first-child {
+            margin-right: .5em;
+    }
+
+    &:last-child {
+            margin-left: .5em;
+    }
+
+    &:focus-within {
+        box-shadow: 0px 0px 0px 2px ${({ theme }) => theme.colors.blue};
+    }
 `;
 
 const InputRadio = styled.input`
     width: 100%;
-    height: 200%;
-    opacity: 0;
+    height: 0px;
+    opacity: 1;
     pointer-events: none;
     position: absolute;
-    cursor: pointer;
-
-    &:focus {
-        ~ span { 
-            outline: 2px solid ${({ theme }) => theme.colors.green};
-            outline-offset: 2px;
-        }
-    }
-
-    &:checked {
-        ~ span {
-            border-color: ${({ theme }) => theme.colors.blue};
-        }
-    }
-
-    &:checked:focus {
-        ~ span {
-            outline: none;
-        }
-    }
+    top: 0;
+    left: 0;
+    outline: none;
 `;
 
 const Priority = ({ isErrored, importance, urgency, onChange }) => {
@@ -93,26 +64,26 @@ const Priority = ({ isErrored, importance, urgency, onChange }) => {
             {importance &&
                 <PrioritySection>
                     <Heading isErrored={isErrored}>Importance</Heading>
-                    <Label>
-                        <InputRadio onChange={onChange} name="importance" id="important" type="radio" />
-                        <RadioButton green>important</RadioButton>
+                    <Label green>
+                        important
+                        <InputRadio data-testid="important" onChange={onChange} name="importance" id="important" type="radio" />
                     </Label>
-                    <Label>
-                        <InputRadio onChange={onChange} name="importance" id="less_important" type="radio" />
-                        <RadioButton orange>less important</RadioButton>
+                    <Label orange>
+                        less important
+                        <InputRadio data-testid="less_important" onChange={onChange} name="importance" id="less_important" type="radio" />
                     </Label>
                 </PrioritySection>
             }
             {urgency &&
                 <PrioritySection>
                     <Heading isErrored={isErrored}>Urgency</Heading>
-                    <Label>
-                        <InputRadio onChange={onChange} name="urgency" id="urgent" type="radio" />
-                        <RadioButton green>urgent</RadioButton>
+                    <Label green>
+                        urgent
+                        <InputRadio data-testid="urgent" onChange={onChange} name="urgency" id="urgent" type="radio" />
                     </Label>
-                    <Label>
-                        <InputRadio onChange={onChange} name="urgency" id="less_urgent" type="radio" />
-                        <RadioButton orange>less urgent</RadioButton>
+                    <Label orange>
+                        less urgent
+                        <InputRadio data-testid="less_urgent" onChange={onChange} name="urgency" id="less_urgent" type="radio" />
                     </Label>
                 </PrioritySection>
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { theme } from 'theme/mainTheme';
 import GlobalStyle from 'theme/GlobalStyle';
 import { HelmetProvider } from 'react-helmet-async';
@@ -17,45 +17,24 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
-const StyledButtonIcon = styled(ButtonIcon)`
-  position: fixed;
-  bottom: 1em;
-  right: calc(((100vw - 1200px)/2) + 1em);
-  opacity: .7;
-  transition: opacity .125s linear;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-const Root = () => {
-  const [isModalOpened, setIsModalOpened] = useState(false);
-
-  const toggleModal = () => setIsModalOpened(!isModalOpened);
-
-  return (
-    <Wrapper data-testid="root">
+const Root = () => (
+  <Wrapper data-testid="root">
+    <BrowserRouter>
       <ThemeProvider theme={theme}>
         <HelmetProvider>
           <GlobalStyle />
           <TasksContextProvider>
-            <>
-              {isModalOpened &&
-                <Helmet>
-                  <body className="modalOpened" />
-                </Helmet>}
-              <Header toggleModal={toggleModal} />
-              <TasksWrapper />
-              <StyledButtonIcon data-testid="add_button" onClick={toggleModal} />
-              {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
-                <Form toggleModal={toggleModal} /></Modal>}
-            </>
+            <ArchivedTasksContextProvider>
+              <Switch>
+                <Route path={routes.archive} component={Archive} />
+                <Route exac path={routes.home} component={Main} />
+              </Switch>
+            </ArchivedTasksContextProvider>
           </TasksContextProvider>
         </HelmetProvider>
       </ThemeProvider>
-    </Wrapper>
-  )
-}
+    </BrowserRouter>
+  </Wrapper>
+);
 
 export default Root;

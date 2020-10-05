@@ -60,7 +60,7 @@ const Main = () => {
       <Header toggleModal={toggleModal} />
       <Heading>Your tasks</Heading>
       <TasksWrapper tasks={tasks} />
-      <StyledButtonIcon onClick={toggleModal} />
+      <StyledButtonIcon data-testid="add_button" onClick={toggleModal} />
       {archivedTasks.length > 0 && <Link to={routes.archive}><StyledButtonIcon gray data-title="View archived tasks" title="View archived tasks"><StyledArchiveIcon /></StyledButtonIcon></Link>}
       {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
         <Form toggleModal={toggleModal} /></Modal>}

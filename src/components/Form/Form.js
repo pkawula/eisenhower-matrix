@@ -171,7 +171,7 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
     }
 
     return (
-        <FormWrapper onSubmit={handleSubmit}>
+        <FormWrapper data-testid="form" onSubmit={handleSubmit}>
             <FormSection>
                 <SectionHeading>Describe your task</SectionHeading>
                 <Input placeholder="title" isErrored={errors.title ? true : false} name="title" value={values.title} onChange={handleUserInput} />

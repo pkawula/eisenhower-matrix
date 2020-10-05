@@ -72,7 +72,7 @@ const Modal = ({ title, children, setIsModalOpened, toggleModal }) => {
     }, [setIsModalOpened]);
 
     return (
-        <Wrapper ref={modalRef}>
+        <Wrapper data-testid="modal" ref={modalRef}>
             <Heading>{title}</Heading>
             {children}
             <StyledButtonIcon onClick={toggleModal} close />

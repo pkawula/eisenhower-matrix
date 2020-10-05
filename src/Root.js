@@ -10,6 +10,13 @@ import ButtonIcon from 'components/ButtonIcon/ButtonIcon';
 import Form from 'components/Form/Form';
 import TasksContextProvider from 'contexts/TasksContext';
 
+const Wrapper = styled.div`
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
 const StyledButtonIcon = styled(ButtonIcon)`
   position: fixed;
   bottom: 1em;
@@ -28,25 +35,26 @@ const Root = () => {
   const toggleModal = () => setIsModalOpened(!isModalOpened);
 
   return (
-    <ThemeProvider theme={theme}>
-      <HelmetProvider>
-        <GlobalStyle />
-        <TasksContextProvider>
-          <>
-            {isModalOpened &&
-              <Helmet>
-                <body className="modalOpened" />
-              </Helmet>}
-            <Header toggleModal={toggleModal} />
-            <TasksWrapper />
-            <StyledButtonIcon onClick={toggleModal} />
-            {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
-              <Form toggleModal={toggleModal} /></Modal>}
-          </>
-        </TasksContextProvider>
-      </HelmetProvider>
-    </ThemeProvider>
-
+    <Wrapper data-testid="root">
+      <ThemeProvider theme={theme}>
+        <HelmetProvider>
+          <GlobalStyle />
+          <TasksContextProvider>
+            <>
+              {isModalOpened &&
+                <Helmet>
+                  <body className="modalOpened" />
+                </Helmet>}
+              <Header toggleModal={toggleModal} />
+              <TasksWrapper />
+              <StyledButtonIcon data-testid="add_button" onClick={toggleModal} />
+              {isModalOpened && <Modal title="Add new task" setIsModalOpened={setIsModalOpened} toggleModal={toggleModal}>
+                <Form toggleModal={toggleModal} /></Modal>}
+            </>
+          </TasksContextProvider>
+        </HelmetProvider>
+      </ThemeProvider>
+    </Wrapper>
   )
 }
 

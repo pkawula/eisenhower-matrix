@@ -62,11 +62,16 @@ it('Form testing', () => {
     expect(priorityRadioInputs.less_urgent).toBeInTheDocument();
 
     // define title and description variables
-    const title = "Write tests for priority rendering";
+    const title = "Write tests";
+    const extendedTitle = "Write tests with extended long title"
     const description = "Tests should check if the proper buttons are rendered and also check if user can click on button which will set the input as chosen";
 
     // try to add new task
     // add and check title
+    fireEvent.input(inputTitle, { target: { value: extendedTitle } });
+    expect(getByText('Title can\'t be longer than 30 signs')).toBeInTheDocument();
+    expect(inputTitle).toHaveValue('');
+
     fireEvent.input(inputTitle, { target: { value: title } });
     expect(inputTitle).toHaveValue(title);
 

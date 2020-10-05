@@ -92,15 +92,16 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
 
         if (type === "title") {
             setInputSignCount(value.length);
+            setErrors({ title: '' });
 
             if (value.length > 30) {
                 setInputSignCount(30);
-
+                setErrors({ title: 'Title can\'t be longer than 30 signs' })
                 return setValues({ title: values.title })
             };
         }
 
-        setValues({ [type]: value });
+        return setValues({ [type]: value });
     }
 
     const handleUserPick = e => {

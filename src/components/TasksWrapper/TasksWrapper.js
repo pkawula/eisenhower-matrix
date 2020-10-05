@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TasksContext } from 'contexts/TasksContext';
-import { REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
+import { ADD_TASK, REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import Form from 'components/Form/Form';
@@ -232,6 +232,16 @@ const TasksWrapper = ({ tasks }) => {
     }
 
     const deleteTask = () => {
+        if (location.pathname === routes.archive) {
+
+            togglePreviewModal();
+
+            return archiveDispatch({
+                type: REMOVE_TASK,
+                id: chosenTask.ID
+            });
+        }
+
         dispatch({
             type: REMOVE_TASK,
             id: chosenTask.ID
@@ -256,11 +266,26 @@ const TasksWrapper = ({ tasks }) => {
         toggleEditModal();
     }
 
-    const archiveTask = () => {
+    const toggleArchive = () => {
+        const task = tasks.filter(({ ID }) => ID === chosenTask.ID)[0];
+
+        if (location.pathname === routes.archive) {
+            dispatch({
+                type: ADD_TASK,
+                payload: {
+                    ...task
+                }
+            });
+
+            togglePreviewModal();
+
+            return deleteTask();
+        }
+
         archiveDispatch({
             type: ARCHIVE_TASK,
             payload: {
-                ...chosenTask,
+                ...task
             }
         });
 
@@ -317,13 +342,13 @@ const TasksWrapper = ({ tasks }) => {
                                 </DetailsSectionDescription>
                             </DetailsSection>
                             <ButtonsWrapper>
-                                {tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done && <StyledActionButton archive onClick={archiveTask}>{
+                                {tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done && <StyledActionButton archive onClick={toggleArchive}>{
                                     location.pathname === routes.home ? "Archive" : "Unarchive"
                                 }</StyledActionButton>}
                                 {location.pathname === routes.home && (
                                     <>
-                                        <StyledActionButton onClick={editTask} secondary>Edit</StyledActionButton>
-                                        <StyledActionButton onClick={() => toggleDone()}>{tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
+                                        {!tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done && <StyledActionButton onClick={editTask} secondary>Edit</StyledActionButton>}
+                                        <StyledActionButton onClick={toggleDone}>{tasks.filter(({ ID }) => ID === chosenTask.ID)[0].done ? 'Undone task' : 'Mark as done'}</StyledActionButton>
                                     </>
                                 )}
                                 <StyledActionButton onClick={deleteTask} cancel>Delete</StyledActionButton>

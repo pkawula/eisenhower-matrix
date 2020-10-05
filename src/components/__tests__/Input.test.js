@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import Input from './Input';
+import Input from '../Form/Input';
 import { theme } from 'theme/mainTheme';
 import { ThemeProvider } from 'styled-components';
 

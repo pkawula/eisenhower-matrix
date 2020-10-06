@@ -67,13 +67,20 @@ it('Form testing', () => {
     const description = "Tests should check if the proper buttons are rendered and also check if user can click on button which will set the input as chosen";
 
     // try to add new task
-    // add and check title
+
+    // add too long title
     fireEvent.input(inputTitle, { target: { value: extendedTitle } });
     expect(getByText('Title can\'t be longer than 30 signs')).toBeInTheDocument();
-    expect(inputTitle).toHaveValue('');
+    expect(inputTitle).toHaveValue(extendedTitle.slice(0, 30));
 
+    // add and check title
     fireEvent.input(inputTitle, { target: { value: title } });
     expect(inputTitle).toHaveValue(title);
+
+    // leave description empty and submit
+    fireEvent.click(saveBtn);
+    expect(mockedFunctions.toggleModal).toHaveBeenCalledTimes(0);
+    expect(getByText('Description is required'));
 
     // add and check description
     fireEvent.input(inputDescription, { target: { value: description } });

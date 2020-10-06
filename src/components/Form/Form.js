@@ -95,9 +95,9 @@ const Form = ({ toggleModal, editData: { title, description, importance, urgency
             setErrors({ title: '' });
 
             if (value.length > 30) {
+                setValues({ title: value.slice(0, 30) });
                 setInputSignCount(30);
-                setErrors({ title: 'Title can\'t be longer than 30 signs' })
-                return setValues({ title: values.title })
+                return setErrors({ title: 'Title can\'t be longer than 30 signs' })
             };
         }
 

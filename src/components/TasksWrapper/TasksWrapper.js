@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import { routes } from 'routes';
 import { TasksContext } from 'contexts/TasksContext';
+import { ArchivedTasksContext } from 'contexts/ArchivedTasksContext';
 import { ADD_TASK, REMOVE_TASK, UPDATE_TASK } from 'reducers/Tasks';
+import { ARCHIVE_TASK } from 'reducers/ArchivedTasks';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import Form from 'components/Form/Form';
 import { ReactComponent as ViewIcon } from 'icons/view.svg';
-import { ArchivedTasksContext } from 'contexts/ArchivedTasksContext';
-import { ARCHIVE_TASK } from 'reducers/ArchivedTasks';
-import { useLocation } from 'react-router-dom';
-import { routes } from 'routes';
 
 const Wrapper = styled.main`
     display: block;
